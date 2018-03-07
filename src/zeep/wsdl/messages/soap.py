@@ -106,6 +106,7 @@ class SoapMessage(ConcreteMessage):
         elif len(result) > 1:
             return result
 
+        return result[0]
         # Check if we can remove the wrapping object to make the return value
         # easier to use.
         result = next(iter(result.__values__.values()))
