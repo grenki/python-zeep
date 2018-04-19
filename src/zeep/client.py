@@ -118,6 +118,7 @@ class Client(object):
     :param port_name: The port name for the default binding. Defaults to the
                       first port defined in the service element in the WSDL
                       document.
+    :param response_preprocessor: function str->str that preprocesses the server response before parsing XML
     :param plugins: a list of Plugin instances
     :param xml_huge_tree: disable lxml/libxml2 security restrictions and
                           support very deep trees and very long text content
@@ -127,7 +128,7 @@ class Client(object):
 
     def __init__(self, wsdl, wsse=None, transport=None,
                  service_name=None, port_name=None, plugins=None,
-                 strict=True, xml_huge_tree=False):
+                 strict=True, xml_huge_tree=False, response_preprocessor=None):
         if not wsdl:
             raise ValueError("No URL given for the wsdl")
 
@@ -139,6 +140,7 @@ class Client(object):
 
         # options
         self.raw_response = False
+        self.response_preprocessor = response_preprocessor
 
         self._default_service = None
         self._default_service_name = service_name

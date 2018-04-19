@@ -19,7 +19,7 @@ class ImportResolver(etree.Resolver):
 
 
 def parse_xml(content, transport, base_url=None, strict=True,
-              xml_huge_tree=False):
+              xml_huge_tree=False, content_preprocessor=None):
     """Parse an XML string and return the root Element.
 
     :param content: The XML string
@@ -34,11 +34,14 @@ def parse_xml(content, transport, base_url=None, strict=True,
       XML as best as it can.
     :param xml_huge_tree: boolean to indicate if lxml should process very
       large XML content.
+    :param content_preprocessor: function str->str that preprocesses the content before parsing
     :type strict: boolean
     :returns: The document root
     :rtype: lxml.etree._Element
 
     """
+    if content_preprocessor:
+        content = content_preprocessor(content)
     recover = not strict
     parser = etree.XMLParser(remove_comments=True, resolve_entities=False,
                              recover=recover, huge_tree=xml_huge_tree)
